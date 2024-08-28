@@ -19,29 +19,34 @@ export default defineConfig({
     Components(),
     ViteFonts({
       google: {
-        families: [{
-          name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
-        }],
-      },
-    }),
+        families: [
+          {
+            name: 'Roboto',
+            styles: 'wght@100;300;400;500;700;900'
+          }
+        ]
+      }
+    })
   ],
-  define: { 'process.env': {}, '__APP_VERSION__': JSON.stringify(process.env.npm_package_version) },
+  define: { 'process.env': {}, __APP_VERSION__: JSON.stringify(process.env.npm_package_version) },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
-    extensions: [
-      '.js',
-      '.json',
-      '.jsx',
-      '.mjs',
-      '.ts',
-      '.tsx',
-      '.vue',
-    ],
+    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue']
   },
   server: {
-    port: 3000,
+    port: 8082,
+    proxy: {
+      '^/LendingPlatform/(?!cv)': {
+        logLevel: 'debug',
+        target: 'http://localhost:8080/',
+        changeOrigin: true,
+        withCredentials: true,
+        secure: false
+      }
+    }
   },
+
+  base: process.env.NODE_ENV === 'production' ? './' : '/LendingPlatform/cv'
 })

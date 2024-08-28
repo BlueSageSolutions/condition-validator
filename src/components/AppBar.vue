@@ -30,7 +30,7 @@
       size="small"
       append-icon="mdi-help-circle"
       class="mr-6"
-      href="/help"
+      @click="$router.push('help')"
     ></v-btn>
   </v-app-bar>
 
