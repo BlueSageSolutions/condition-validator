@@ -36,7 +36,6 @@ export default defineConfig({
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue']
   },
   server: {
-    port: 8082,
     proxy: {
       '^/LendingPlatform/(?!cv)': {
         logLevel: 'debug',

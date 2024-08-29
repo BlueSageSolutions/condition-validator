@@ -13,10 +13,12 @@ import router from './router'
 
 // Composables
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
 const app = createApp(App)
 
 registerPlugins(app)
 app.use(router)
+app.use(createPinia())
 
 app.mount('#app')

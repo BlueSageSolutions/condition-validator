@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" class="text-right">Alice Firstimer #1111001638</v-col>
+      <v-col cols="12" class="text-right"
+        >Alice Firstimer #{{ homeLoanMetaDataStore.lenderLoanNumber }}</v-col
+      >
     </v-row>
     <v-row>
       <v-col cols="2" class="align-content-center pb-0"
@@ -53,9 +55,11 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useHomeLoanMetaDataStore } from '@/stores/homeLoanMetaData'
 
   const props = defineProps(['id'])
   const router = useRouter()
+  const homeLoanMetaDataStore = useHomeLoanMetaDataStore()
 
   const rowClick = (_, row) => {
     router.push({
