@@ -11,7 +11,8 @@
   import axios from 'axios'
   import { RouterView } from 'vue-router'
   import AppBar from './components/AppBar.vue'
-  // import { onMounted } from 'vue'
+  import { useHomeLoanMetaDataStore } from '@/stores/homeLoanMetaData'
+  const homeLoanMetaDataStore = useHomeLoanMetaDataStore()
 
   axios.interceptors.request.use((config) => {
     config.withCredentials = true
@@ -21,7 +22,7 @@
     return config
   }, null)
 
-  // onMounted(() => {
-  //   loadLoanMetadata()
-  // })
+  if (!homeLoanMetaDataStore.lenderLoanNumber) {
+    homeLoanMetaDataStore.loadLoanMetadata()
+  }
 </script>

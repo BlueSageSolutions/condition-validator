@@ -5,21 +5,33 @@ import { axiosCall } from '@/util/axiosCall'
 export const useHomeLoanMetaDataStore = defineStore('HomeLoanMetaData', {
   state: () => ({
     loanId: 7541,
-    lenderLoanNumber: 0,
-    borrowers: []
+    lenderLoanNumber: '',
+    borrowers: [],
+    loading: false
   }),
-  getters: {
+  actions: {
     loadLoanMetadata() {
+      this.loading = true
       const request = Requests.homeLoanMetaData()
       axiosCall(request)
         .then((response) => {
-          console.log('response', response)
           this.lenderLoanNumber = response.data.lenderLoanNumber
           this.borrowers = response.data.borrowers
+          this.loading = false
         })
         .catch((error) => {
           console.error(error)
         })
+    }
+  },
+  getters: {
+    borrowerNames: (state) => {
+      if (!state.borrowers.length) return ''
+      let names = ''
+      state.borrowers.forEach((_, i) => {
+        names += state.borrowers[i].displayName + ', '
+      })
+      return names.slice(0, -2)
     }
   }
 })

@@ -1,9 +1,19 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" class="text-right"
-        >Alice Firstimer #{{ homeLoanMetaDataStore.lenderLoanNumber }}</v-col
+      <v-col
+        v-if="homeLoanMetaDataStore.loading"
+        cols="12"
+        class="text-right"
+        style="max-height: 48px"
       >
+        <v-skeleton-loader type="text"></v-skeleton-loader>
+      </v-col>
+      <v-col v-else cols="12" class="text-right">
+        {{ homeLoanMetaDataStore.borrowerNames }}&nbsp; #{{
+          homeLoanMetaDataStore.lenderLoanNumber
+        }}
+      </v-col>
     </v-row>
     <v-row>
       <v-col cols="2" class="align-content-center pb-0"
