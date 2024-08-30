@@ -4,7 +4,7 @@ import { axiosCall } from '@/util/axiosCall'
 
 export const useHomeLoanMetaDataStore = defineStore('HomeLoanMetaData', {
   state: () => ({
-    loanId: 7541,
+    loanId: null,
     lenderLoanNumber: '',
     borrowers: [],
     loading: false
@@ -33,5 +33,8 @@ export const useHomeLoanMetaDataStore = defineStore('HomeLoanMetaData', {
       })
       return names.slice(0, -2)
     }
+  },
+  persist: {
+    storage: sessionStorage
   }
 })
