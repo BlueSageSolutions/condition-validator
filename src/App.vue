@@ -17,7 +17,6 @@
   const route = useRoute()
 
   axios.interceptors.request.use((config) => {
-    config.withCredentials = true
     config.params = config.params || {}
     config.params['authLoanId'] = homeLoanMetaDataStore.loanId
     config.params['loanId'] = homeLoanMetaDataStore.loanId

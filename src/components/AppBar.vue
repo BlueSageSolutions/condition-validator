@@ -1,7 +1,9 @@
 <template>
   <v-app-bar app theme="dark">
-    <v-toolbar-title>
-      <router-link class="title" :to="{ name: 'conditions-list' }">Condition Validator</router-link>
+    <v-toolbar-title id="site-title" :style="{ backgroundImage: `url(${logoUrl})` }">
+      <router-link class="title pl-8" :to="{ name: 'conditions-list' }"
+        >Condition Validator</router-link
+      >
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-icon
@@ -54,6 +56,7 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useTheme } from 'vuetify'
+  import logoUrl from '@/assets/bss-squares.svg'
 
   const version = __APP_VERSION__
   const theme = useTheme()
@@ -109,5 +112,8 @@
   }
   a.title:hover {
     text-decoration: underline;
+  }
+  #site-title {
+    background-size: contain;
   }
 </style>

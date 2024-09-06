@@ -25,10 +25,8 @@
                       text="View Document"
                       density="comfortable"
                       append-icon="mdi-open-in-new"
-                      href="https://google.com"
-                      target="_blank"
                       size="small"
-                      @click.stop
+                      @click="openDocBlob(items[0][0].documentLocator)"
                     ></v-btn>
                   </v-sheet>
                 </v-sheet>
@@ -58,9 +56,8 @@
                       density="comfortable"
                       size="small"
                       append-icon="mdi-open-in-new"
-                      href="https://google.com"
                       target="_blank"
-                      @click.stop
+                      @click="openDocBlob(items[0][0].documentLocator)"
                     ></v-btn>
                   </v-sheet>
                 </v-sheet>
@@ -99,10 +96,9 @@
                       text="View Document"
                       density="comfortable"
                       append-icon="mdi-open-in-new"
-                      href="https://google.com"
                       target="_blank"
                       size="small"
-                      @click.stop
+                      @click="openDocBlob(items[0][0].documentLocator)"
                     ></v-btn>
                   </v-sheet>
                 </v-sheet>
@@ -144,10 +140,9 @@
                       text="View Document"
                       density="comfortable"
                       append-icon="mdi-open-in-new"
-                      href="https://google.com"
                       target="_blank"
                       size="small"
-                      @click.stop
+                      @click="openDocBlob(items[0][0].documentLocator)"
                     ></v-btn>
                   </v-sheet>
                 </v-sheet>
@@ -179,10 +174,9 @@
                       text="View Document"
                       density="comfortable"
                       append-icon="mdi-open-in-new"
-                      href="https://google.com"
                       target="_blank"
                       size="small"
-                      @click.stop
+                      @click="openDocBlob(items[0][0].documentLocator)"
                     ></v-btn>
                   </v-sheet>
                 </v-sheet>
@@ -208,8 +202,9 @@
   import { ref } from 'vue'
   import { Requests } from '@/service/requests'
   import { axiosCall } from '@/util/axiosCall'
+  import axios from 'axios'
 
-  const getDocFromS3 = async (documentLocator) => {
+  const getS3DocUrl = async (documentLocator) => {
     const request = Requests.generatePresignedUrl()
     try {
       const { data } = await axiosCall(
@@ -217,21 +212,40 @@
         { data: { keyName: documentLocator, expirationSeconds: 300 } },
         { withCredentials: true }
       )
+      console.log('data.url', data.url)
+      return data.url
+    } catch (error) {
+      console.error('error in getS3DocUrl', error)
+    }
+  }
+
+  const getS3DocContent = async (url) => {
+    try {
+      const { data } = await axios.get(url, { withCredentials: false })
       return data
     } catch (error) {
-      console.error(error)
+      console.error('error in getS3DocContent', error)
     }
   }
 
   const openDocBlob = async (documentLocator) => {
     try {
-      const fileResults = await getDocFromS3(documentLocator)
-      let blob = new Blob([fileResults], { type: 'text/xml' })
+      const fileUrl = await getS3DocUrl(documentLocator)
+      //eslint-disable-next-line
+      //debugger
+      const fileContents = await getS3DocContent(fileUrl)
+      //eslint-disable-next-line
+      //debugger
+      let blob = new Blob([fileContents], { type: 'text/xml' })
+      //eslint-disable-next-line
+      //debugger
       let url = URL.createObjectURL(blob)
+      //eslint-disable-next-line
+      //debugger
       window.open(url)
       URL.revokeObjectURL(url) //Releases the resources
     } catch (error) {
-      console.error(error)
+      console.error('error in openDocBlob', error)
     }
   }
 
