@@ -204,76 +204,105 @@
   </v-container>
 </template>
 
-<script>
-  export default {
-    data() {
-      return {
-        groupBy: [
-          {
-            key: 'doc_id',
-            order: 'asc'
-          }
-        ],
-        headers: [
-          {
-            key: 'attribute',
-            sortable: true,
-            title: 'Attribuite',
-            nowrap: true
-          },
-          {
-            key: 'value',
-            sortable: true,
-            title: 'Value',
-            nowrap: true
-          },
-          {
-            key: 'confidence',
-            sortable: true,
-            title: 'Confidence'
-          }
-        ],
-        items: [
-          [
-            {
-              attribute: 'Statement Period',
-              value: '2022',
-              confidence: '98%',
-              doc_id: '12'
-            }
-          ],
-          [
-            {
-              attribute: 'Statement Period',
-              value: 'May 1-31 2024',
-              confidence: '95%',
-              doc_id: '123'
-            },
-            {
-              attribute: 'Account Number',
-              value: '24661566',
-              confidence: '95%',
-              doc_id: '123'
-            }
-          ],
-          [
-            {
-              attribute: 'Document Page Count',
-              value: 'Page 1-30',
-              confidence: '99%',
-              doc_id: '123'
-            },
-            {
-              attribute: 'Account Number',
-              value: '24661566',
-              confidence: '95%',
-              doc_id: '123'
-            }
-          ]
-        ]
-      }
+<script setup>
+  import { ref } from 'vue'
+  import { Requests } from '@/service/requests'
+  import { axiosCall } from '@/util/axiosCall'
+
+  const getDocFromS3 = async (documentLocator) => {
+    const request = Requests.generatePresignedUrl()
+    try {
+      const { data } = await axiosCall(
+        request,
+        { data: { keyName: documentLocator, expirationSeconds: 300 } },
+        { withCredentials: true }
+      )
+      return data
+    } catch (error) {
+      console.error(error)
     }
   }
+
+  const openDocBlob = async (documentLocator) => {
+    try {
+      const fileResults = await getDocFromS3(documentLocator)
+      let blob = new Blob([fileResults], { type: 'text/xml' })
+      let url = URL.createObjectURL(blob)
+      window.open(url)
+      URL.revokeObjectURL(url) //Releases the resources
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const headers = ref([
+    {
+      key: 'attribute',
+      sortable: true,
+      title: 'Attribuite',
+      nowrap: true
+    },
+    {
+      key: 'value',
+      sortable: true,
+      title: 'Value',
+      nowrap: true
+    },
+    {
+      key: 'confidence',
+      sortable: true,
+      title: 'Confidence'
+    }
+  ])
+
+  const items = ref([
+    [
+      {
+        attribute: 'Statement Period',
+        value: '2022',
+        confidence: '98%',
+        doc_id: '12',
+        documentLocator:
+          '7354/5d1738e0-ee3f-46c0-adcc-d78da702df84_2024-08-29T08.59.25.821Z-test-D-00002.pdf'
+      }
+    ],
+    [
+      {
+        attribute: 'Statement Period',
+        value: 'May 1-31 2024',
+        confidence: '95%',
+        doc_id: '123',
+        documentLocator:
+          '7354/5d1738e0-ee3f-46c0-adcc-d78da702df84_2024-08-29T08.59.25.821Z-test-D-00002.pdf'
+      },
+      {
+        attribute: 'Account Number',
+        value: '24661566',
+        confidence: '95%',
+        doc_id: '123',
+        documentLocator:
+          '7354/5d1738e0-ee3f-46c0-adcc-d78da702df84_2024-08-29T08.59.25.821Z-test-D-00002.pdf'
+      }
+    ],
+    [
+      {
+        attribute: 'Document Page Count',
+        value: 'Page 1-30',
+        confidence: '99%',
+        doc_id: '123',
+        documentLocator:
+          '7354/5d1738e0-ee3f-46c0-adcc-d78da702df84_2024-08-29T08.59.25.821Z-test-D-00002.pdf'
+      },
+      {
+        attribute: 'Account Number',
+        value: '24661566',
+        confidence: '95%',
+        doc_id: '123',
+        documentLocator:
+          '7354/5d1738e0-ee3f-46c0-adcc-d78da702df84_2024-08-29T08.59.25.821Z-test-D-00002.pdf'
+      }
+    ]
+  ])
 </script>
 
 <style scoped>

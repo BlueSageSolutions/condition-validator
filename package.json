@@ -10,7 +10,6 @@
     "@mdi/font": "7.4.47",
     "axios": "^1.7.5",
     "pinia": "^2.2.2",
-    "pinia-plugin-persistedstate": "^3.2.3",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
     "vue-router": "^4.4.3",

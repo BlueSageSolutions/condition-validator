@@ -33,8 +33,5 @@ export const useHomeLoanMetaDataStore = defineStore('HomeLoanMetaData', {
       })
       return names.slice(0, -2)
     }
-  },
-  persist: {
-    storage: sessionStorage
   }
 })

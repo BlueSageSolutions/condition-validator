@@ -1,6 +1,8 @@
 <template>
   <v-app-bar app theme="dark">
-    <v-toolbar-title>Condition Validator</v-toolbar-title>
+    <v-toolbar-title>
+      <router-link class="title" :to="{ name: 'conditions-list' }">Condition Validator</router-link>
+    </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-icon
       @click="toggleTheme"
@@ -12,7 +14,7 @@
       variant="tonal"
       text="Home"
       append-icon="mdi-home"
-      href="/"
+      :to="{ name: 'conditions-list' }"
       size="small"
       class="mr-2"
     ></v-btn>
@@ -30,7 +32,7 @@
       size="small"
       append-icon="mdi-help-circle"
       class="mr-6"
-      @click="$router.push('help')"
+      :to="{ name: 'help' }"
     ></v-btn>
   </v-app-bar>
 
@@ -99,3 +101,13 @@
   // dialogs
   const aboutDialog = ref(false)
 </script>
+
+<style>
+  a.title {
+    color: white;
+    text-decoration: none;
+  }
+  a.title:hover {
+    text-decoration: underline;
+  }
+</style>

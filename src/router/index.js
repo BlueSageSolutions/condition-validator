@@ -1,24 +1,24 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import ContiionsListTable from '@/components/ContiionsListTable.vue'
 import ConditionDetailView from '@/views/ConditionDetailView.vue'
 import HelpView from '@/views/HelpView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/:loanId?',
+      path: '/:loanId',
       name: 'conditions-list',
       component: ContiionsListTable
     },
     {
-      path: '/condition/:id',
+      path: '/:loanId/condition/:id',
       name: 'condition-details',
       props: true,
       component: ConditionDetailView
     },
     {
-      path: '/help',
+      path: '/:loanId/help',
       name: 'help',
       component: HelpView
     }
