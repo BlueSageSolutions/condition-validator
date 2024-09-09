@@ -13,7 +13,13 @@ export const useHomeLoanMetaDataStore = defineStore('HomeLoanMetaData', {
     loadLoanMetadata() {
       this.loading = true
       const request = Requests.homeLoanMetaData()
-      axiosCall(request)
+      let config = {
+        params: {
+          authLoanId: this.loanId,
+          loanId: this.loanId
+        }
+      }
+      axiosCall(request, config)
         .then((response) => {
           this.lenderLoanNumber = response.data.lenderLoanNumber
           this.borrowers = response.data.borrowers

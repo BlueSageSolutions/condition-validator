@@ -221,7 +221,7 @@
 
   const getS3DocContent = async (url) => {
     try {
-      const { data } = await axios.get(url, { withCredentials: false })
+      const { data } = await axios.get(url, { responseType: 'blob' })
       return data
     } catch (error) {
       console.error('error in getS3DocContent', error)
@@ -231,17 +231,9 @@
   const openDocBlob = async (documentLocator) => {
     try {
       const fileUrl = await getS3DocUrl(documentLocator)
-      //eslint-disable-next-line
-      //debugger
       const fileContents = await getS3DocContent(fileUrl)
-      //eslint-disable-next-line
-      //debugger
-      let blob = new Blob([fileContents], { type: 'text/xml' })
-      //eslint-disable-next-line
-      //debugger
+      let blob = new Blob([fileContents], { type: 'application/pdf' })
       let url = URL.createObjectURL(blob)
-      //eslint-disable-next-line
-      //debugger
       window.open(url)
       URL.revokeObjectURL(url) //Releases the resources
     } catch (error) {

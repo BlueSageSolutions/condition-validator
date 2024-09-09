@@ -8,20 +8,12 @@
 </template>
 
 <script setup>
-  import axios from 'axios'
   import { RouterView } from 'vue-router'
   import { useRoute } from 'vue-router'
   import AppBar from './components/AppBar.vue'
-  import { useHomeLoanMetaDataStore } from '@/stores/homeLoanMetaData'
+  import { useHomeLoanMetaDataStore } from '@/stores/HomeLoanMetaData'
   const homeLoanMetaDataStore = useHomeLoanMetaDataStore()
   const route = useRoute()
-
-  axios.interceptors.request.use((config) => {
-    config.params = config.params || {}
-    config.params['authLoanId'] = homeLoanMetaDataStore.loanId
-    config.params['loanId'] = homeLoanMetaDataStore.loanId
-    return config
-  }, null)
 
   if (route.params && route.params.loanId) {
     if (parseInt(route.params.loanId) != homeLoanMetaDataStore.loanId) {
